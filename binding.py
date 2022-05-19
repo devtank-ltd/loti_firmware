@@ -311,7 +311,10 @@ class uart_t(io_board_prop_t):
         parts = r[0].split()
         assert int(parts[1]) == self.index, "Wrong uart responed."
         assert self._baud == int(parts[3]), "Wrong uart baud rate"
-        bits, parity, stopbits = parts[4]
+        fmt = parts[4]
+        if sys.version_info[0] > 2:
+            fmt = fmt.decode()
+        bits, parity, stopbits = fmt
         assert self._bytesize == serial.SEVENBITS and bits == '7' or \
                self._bytesize == serial.EIGHTBITS and bits == '8', \
                "Bits not set as expected."
