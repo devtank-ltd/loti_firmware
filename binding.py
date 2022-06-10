@@ -436,12 +436,12 @@ class io_board_py_t(object):
     def use_ios_map(self, ios):
         for n in range(0, len(ios)):
             self.ios[n].setup(*ios[n])
-        r = self.command("count")
+        r = self.command(b"count")
         m = {}
         for line in r:
             parts = line.split(b':')
             name  = parts[0].lower().strip()
-            if name in ["inputs", "outputs"]:
+            if name in [b"inputs", b"outputs"]:
                 count = int(parts[1])
                 for n in range(0, count):
                     child = type(self).PROP_MAP[name](n, self)
