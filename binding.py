@@ -424,6 +424,8 @@ class io_board_py_t(object):
                 adc.name = adc_name
                 adc.adc_scale  = adc_adj[0]
                 adc.adc_offset = adc_adj[1]
+                if isinstance(adc_name, str):
+                    adc_name = adc_name.encode()
                 debug_print(b"%sADC %u : %s : Cal %G %G" % (self.log_prefix, adc.index, adc_name, adc_adj[0], adc_adj[1]))
                 if adc.index in mapped_adcs:
                     debug_print(b"%sADC name %s double mapped in calibration." % (self.log_prefix, adc_name))
