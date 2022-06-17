@@ -334,12 +334,14 @@ class uart_t(io_board_prop_t):
         return r
 
     def write(self, s):
+        if isinstance(s, str):
+            s = s.encode()
         self.io.write(s)
-        debug_print("%sUART%u << %s" % (self.parent.log_prefix, self.index, s))
+        debug_print(b"%sUART%u << %s" % (self.parent.log_prefix, self.index, s))
 
     def readline(self):
         line = self.io.readline()
-        debug_print("%sUART%u >> %s" % (self.parent.log_prefix, self.index, line))
+        debug_print(b"%sUART%u >> %s" % (self.parent.log_prefix, self.index, line))
         return line
 
     def drain(self):
@@ -348,7 +350,7 @@ class uart_t(io_board_prop_t):
         while self.io.in_waiting:
             self.io.read(self.io.in_waiting)
             time.sleep(1 / (self._baud / 10) * 10)
-        debug_print("%sUART%u Drained" % (self.parent.log_prefix, self.index))
+        debug_print(b"%sUART%u Drained" % (self.parent.log_prefix, self.index))
 
 
 
