@@ -385,7 +385,7 @@ class io_board_py_t(object):
             self.comm.readline(self.comm.in_waiting)
         if isinstance(loti_label, str):
             loti_label = loti_label.encode()
-        self.log_prefix = b"%s: " % loti_label if loti_label else ""
+        self.log_prefix = b"%s: " % loti_label if loti_label else b""
         debug_print(b"%sDrained" % self.log_prefix)
         r = self.command(b"count")
         for line in r:
