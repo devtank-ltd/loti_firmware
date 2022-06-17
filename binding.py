@@ -55,7 +55,7 @@ class adc_t(io_board_prop_t):
 
     def _raw_to_voltage(self, v):
         r = v * self.adc_scale + self.adc_offset
-        debug_print("%sADC %u%s : raw %u : calibrated : %G" % (self.parent.log_prefix, self.index, "(%s)" % self.name if self.name else "", v, r))
+        debug_print(b"%sADC %u%s : raw %u : calibrated : %G" % (self.parent.log_prefix, self.index, "(%s)" % self.name if self.name else "", v, r))
         return r
 
     def refresh(self):
@@ -297,7 +297,7 @@ class uart_t(io_board_prop_t):
 
         own_port = base_name + str(int(num) + self.index + 1)
 
-        debug_print("%sUART%u : %s" % (parent.log_prefix, self.index, own_port))
+        debug_print(b"%sUART%u : %s" % (parent.log_prefix, self.index, own_port))
 
         self._io = serial.Serial(port=own_port,
                           baudrate=self._baud,
@@ -330,7 +330,7 @@ class uart_t(io_board_prop_t):
 
     def read(self, num):
         r = self.io.read(num)
-        debug_print("%sUART%u >> %s" % (self.parent.log_prefix, self.index, r))
+        debug_print(b"%sUART%u >> %s" % (self.parent.log_prefix, self.index, r))
         return r
 
     def write(self, s):
@@ -383,8 +383,10 @@ class io_board_py_t(object):
                 timeout=1)
         while self.comm.in_waiting:
             self.comm.readline(self.comm.in_waiting)
-        self.log_prefix = "%s: " % loti_label if loti_label else ""
-        debug_print("%sDrained" % self.log_prefix)
+        if isinstance(loti_label, str):
+            loti_label = loti_label.encode()
+        self.log_prefix = b"%s: " % loti_label if loti_label else ""
+        debug_print(b"%sDrained" % self.log_prefix)
         r = self.command(b"count")
         for line in r:
             parts = line.split(b':')
@@ -422,9 +424,9 @@ class io_board_py_t(object):
                 adc.name = adc_name
                 adc.adc_scale  = adc_adj[0]
                 adc.adc_offset = adc_adj[1]
-                debug_print("%sADC %u : %s : Cal %G %G" % (self.log_prefix, adc.index, adc_name, adc_adj[0], adc_adj[1]))
+                debug_print(b"%sADC %u : %s : Cal %G %G" % (self.log_prefix, adc.index, adc_name, adc_adj[0], adc_adj[1]))
                 if adc.index in mapped_adcs:
-                    debug_print("%sADC name %s double mapped in calibration." % (self.log_prefix, adc_name))
+                    debug_print(b"%sADC name %s double mapped in calibration." % (self.log_prefix, adc_name))
                 mapped_adcs[adc.index] = True
 
         for adc in self.adcs:
@@ -433,7 +435,7 @@ class io_board_py_t(object):
             adc.name = None
             adc.adc_scale = default_scale
             adc.adc_offset = default_offset
-            debug_print("%sADC %u : Cal %G %G" % (self.log_prefix, adc.index, default_scale, default_offset))
+            debug_print(b"%sADC %u : Cal %G %G" % (self.log_prefix, adc.index, default_scale, default_offset))
 
     def use_ios_map(self, ios):
         for n in range(0, len(ios)):
@@ -451,7 +453,7 @@ class io_board_py_t(object):
                     children += [child]
 
     def __getattr__(self, item):
-        debug_print("%sBinding name lookup %s" %(self.log_prefix, item))
+        debug_print(b"%sBinding name lookup %s" %(self.log_prefix, item.encode()))
         getter = self.NAME_MAP.get(item, None)
         if getter:
             return getter(self)
@@ -459,7 +461,7 @@ class io_board_py_t(object):
 
     def _read_line(self):
         line = self.comm.readline().strip()
-        debug_print("%s>> : %s" % (self.log_prefix, line))
+        debug_print(b"%s>> : %s" % (self.log_prefix, line))
         return line
 
     def read_response(self):
@@ -487,5 +489,5 @@ class io_board_py_t(object):
         self.comm.write(cmd)
         self.comm.write(b'\n')
         self.comm.flush()
-        debug_print("%s<< %s" % (self.log_prefix, cmd))
+        debug_print(b"%s<< %s" % (self.log_prefix, cmd))
         return self.read_response()
