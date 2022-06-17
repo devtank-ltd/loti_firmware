@@ -55,7 +55,7 @@ class adc_t(io_board_prop_t):
 
     def _raw_to_voltage(self, v):
         r = v * self.adc_scale + self.adc_offset
-        debug_print(b"%sADC %u%s : raw %u : calibrated : %G" % (self.parent.log_prefix, self.index, "(%s)" % self.name if self.name else "", v, r))
+        debug_print(b"%sADC %u%s : raw %u : calibrated : %G" % (self.parent.log_prefix, self.index, b"(%s)" % self.name if self.name else b"", v, r))
         return r
 
     def refresh(self):
@@ -421,6 +421,8 @@ class io_board_py_t(object):
         for adc_name, adc_adj in cal_map.items():
             if adc_name in self.NAME_MAP:
                 adc = getattr(self, adc_name)
+                if isinstance(adc_name, str):
+                    adc_name = adc_name.encode()
                 adc.name = adc_name
                 adc.adc_scale  = adc_adj[0]
                 adc.adc_offset = adc_adj[1]
