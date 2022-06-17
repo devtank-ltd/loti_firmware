@@ -297,7 +297,7 @@ class uart_t(io_board_prop_t):
 
         own_port = base_name + str(int(num) + self.index + 1)
 
-        debug_print(b"%sUART%u : %s" % (parent.log_prefix, self.index, own_port))
+        debug_print(b"%sUART%u : %s" % (parent.log_prefix, self.index, own_port.encode()))
 
         self._io = serial.Serial(port=own_port,
                           baudrate=self._baud,
