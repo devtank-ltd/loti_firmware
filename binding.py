@@ -363,7 +363,38 @@ class io_board_py_t(object):
                 b"ios"   : io_t,
                 b"uarts" : uart_t}
     READTIME = 2
-    NAME_MAP = {}
+    NAME_MAP = {
+        "GPIO1"          : lambda board : board.ios[0],
+        "GPIO2"          : lambda board : board.ios[1],
+        "GPIO3"          : lambda board : board.ios[2],
+        "GPIO4"          : lambda board : board.ios[3],
+        "GPIO5"          : lambda board : board.ios[4],
+        "GPIO6"          : lambda board : board.ios[5],
+        "GPIO7"          : lambda board : board.ios[6],
+        "GPIO8"          : lambda board : board.ios[7],
+        "GPIO9"          : lambda board : board.ios[8],
+        "GPIO10"         : lambda board : board.ios[15],
+        "GPIO11"         : lambda board : board.ios[16],
+        "DUT0_RX_GPIO17" : lambda board : board.ios[28],
+        "PPS1_GPIO12"    : lambda board : board.ios[27],
+        "DUT0_TX_GPIO18" : lambda board : board.ios[29],
+        "PPS0_GPIO13"    : lambda board : board.ios[26],
+        "DUT1_RX_GPIO15" : lambda board : board.ios[30],
+        "GPIO14"         : lambda board : board.ios[17],
+        "DUT1_TX_GPIO16" : lambda board : board.ios[31],
+        "DUT_OUT0"       : lambda board : board.ios[9],
+        "CH1_SW"         : lambda board : board.ios[18],
+        "CH2_SW"         : lambda board : board.ios[19],
+        "CH3_SW"         : lambda board : board.ios[20],
+        "CH4_SW"         : lambda board : board.ios[21],
+        "CH5_SW"         : lambda board : board.ios[22],
+        "CH6_SW"         : lambda board : board.ios[23],
+        "CH7_SW"         : lambda board : board.ios[24],
+        "CH8_SW"         : lambda board : board.ios[25],
+        "OUT1_NO"        : lambda board : board.ios[10],
+        "OUT2_NO"        : lambda board : board.ios[11],
+        "OUT3_NO"        : lambda board : board.ios[12],
+    }
 
     def __init__(self, dev, loti_label = None):
         self.ppss = []
