@@ -394,6 +394,16 @@ class io_board_py_t(object):
         "OUT1_NO"        : lambda board : board.ios[10],
         "OUT2_NO"        : lambda board : board.ios[11],
         "OUT3_NO"        : lambda board : board.ios[12],
+        "3V3_ADC1"       : lambda board : board.adcs[0],
+        "3V3_ADC2"       : lambda board : board.adcs[1],
+        "3V3_ADC3"       : lambda board : board.adcs[2],
+        "3V3_ADC4"       : lambda board : board.adcs[3],
+        "3V3_ADC5"       : lambda board : board.adcs[4],
+        "5V_ADC6"        : lambda board : board.adcs[5],
+        "5V_ADC7"        : lambda board : board.adcs[6],
+        "12V_ADC8"       : lambda board : board.adcs[7],
+        "12V_ADC9"       : lambda board : board.adcs[8],
+        "12V_ADC10"      : lambda board : board.adcs[9],
     }
 
     def __init__(self, dev, loti_label = None):
